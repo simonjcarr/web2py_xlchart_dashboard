@@ -1,0 +1,142 @@
+timestamp: 2012-10-30T16:06:11.659000
+CREATE TABLE auth_user(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    first_name CHAR(128),
+    last_name CHAR(128),
+    email CHAR(512),
+    password CHAR(512),
+    registration_key CHAR(512),
+    reset_password_key CHAR(512),
+    registration_id CHAR(512)
+);
+success!
+timestamp: 2012-10-30T16:06:11.862000
+CREATE TABLE auth_group(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    role CHAR(512),
+    description TEXT
+);
+success!
+timestamp: 2012-10-30T16:06:12.018000
+CREATE TABLE auth_membership(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    user_id INTEGER REFERENCES auth_user (id) ON DELETE CASCADE,
+    group_id INTEGER REFERENCES auth_group (id) ON DELETE CASCADE
+);
+success!
+timestamp: 2012-10-30T16:06:12.158000
+CREATE TABLE auth_permission(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    group_id INTEGER REFERENCES auth_group (id) ON DELETE CASCADE,
+    name CHAR(512),
+    table_name CHAR(512),
+    record_id INTEGER
+);
+success!
+timestamp: 2012-10-30T16:06:12.283000
+CREATE TABLE auth_event(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    time_stamp TIMESTAMP,
+    client_ip CHAR(512),
+    user_id INTEGER REFERENCES auth_user (id) ON DELETE CASCADE,
+    origin CHAR(512),
+    description TEXT
+);
+success!
+timestamp: 2012-10-30T16:06:12.424000
+CREATE TABLE auth_cas(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    user_id INTEGER REFERENCES auth_user (id) ON DELETE CASCADE,
+    created_on TIMESTAMP,
+    service CHAR(512),
+    ticket CHAR(512),
+    renew CHAR(1)
+);
+success!
+timestamp: 2012-11-02T10:02:53.198000
+CREATE TABLE workbooks(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    path CHAR(512),
+    title CHAR(512)
+);
+success!
+timestamp: 2012-11-02T10:02:53.417000
+CREATE TABLE charts(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    chartName CHAR(512),
+    workbooks INTEGER REFERENCES workbooks (id) ON DELETE CASCADE,
+    worksheet CHAR(512)
+);
+success!
+timestamp: 2012-11-02T10:06:38.886000
+ALTER TABLE charts ADD id_workbook INTEGER REFERENCES workbooks (id) ON DELETE CASCADE;
+timestamp: 2012-11-02T10:06:39.136000
+CREATE TABLE user_charts(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    id_user INTEGER REFERENCES auth_user (id) ON DELETE CASCADE,
+    id_chart INTEGER REFERENCES charts (id) ON DELETE CASCADE,
+    title CHAR(512),
+    description TEXT
+);
+success!
+timestamp: 2012-11-02T10:08:01.810000
+CREATE TABLE dashboards(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    id_user INTEGER REFERENCES auth_user (id) ON DELETE CASCADE,
+    name CHAR(512),
+    title CHAR(512),
+    description TEXT
+);
+success!
+timestamp: 2012-11-02T10:08:01.951000
+CREATE TABLE dashboard_section(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    id_dashboard INTEGER REFERENCES dashboards (id) ON DELETE CASCADE,
+    title CHAR(512),
+    bgcolor CHAR(512),
+    row INTEGER,
+    col INTEGER,
+    colspan INTEGER
+);
+success!
+timestamp: 2012-11-02T10:08:02.091000
+CREATE TABLE chart_position(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    id_section INTEGER REFERENCES dashboard_section (id) ON DELETE CASCADE,
+    width INTEGER,
+    height INTEGER
+);
+success!
+timestamp: 2012-11-02T11:19:08.061000
+CREATE TABLE workbook(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    path CHAR(512),
+    title CHAR(512)
+);
+success!
+timestamp: 2012-11-02T11:20:33.345000
+CREATE TABLE chart(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    chartName CHAR(512),
+    id_workbook INTEGER REFERENCES workbook (id) ON DELETE CASCADE,
+    worksheet CHAR(512)
+);
+success!
+timestamp: 2012-11-02T11:21:33.358000
+CREATE TABLE user_chart(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    id_user INTEGER REFERENCES auth_user (id) ON DELETE CASCADE,
+    id_chart INTEGER REFERENCES chart (id) ON DELETE CASCADE,
+    title CHAR(512),
+    description TEXT
+);
+success!
+timestamp: 2012-11-02T11:21:33.639000
+CREATE TABLE dashboard(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    id_user INTEGER REFERENCES auth_user (id) ON DELETE CASCADE,
+    name CHAR(512),
+    title CHAR(512),
+    description TEXT
+);
+success!

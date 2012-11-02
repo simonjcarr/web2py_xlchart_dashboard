@@ -1,0 +1,16 @@
+{{extend 'layout.html'}}
+<h1>Register Workbook Chart</h1>
+<h3>Select the Workbook which contains the chart</h3>
+<table>
+<tr>
+    <th>Title</th>
+    <th>Workbook Path</th>
+</tr>
+{{for workbook in workbooks:}}
+	<tr>
+        <td><a href="#">{{=workbook.title}}</a></td>
+        <td>{{=workbook.path}}</td>
+	</tr>
+
+{{pass}}
+</table>
