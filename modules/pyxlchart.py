@@ -24,7 +24,7 @@ class Pyxlchart(object):
         self.ImageFilename = ''
         self.ReplaceWhiteSpaceChar = '_'
         self.ImageType = 'jpg'
-
+        self.ChartDetail = []
     def __del__(self):
         pass
     def start_export(self):
@@ -32,7 +32,8 @@ class Pyxlchart(object):
             return "WorkbookDirectory not set"
         else:
             self._export()    
-
+        return self.ChartDetail
+    
     def _export(self):
         """
         Exports Charts as determined by the settings in class variabels.
@@ -52,25 +53,26 @@ class Pyxlchart(object):
             cht = sht.ChartObjects(chartname)
             self._save_chart(cht)
             return
-
+        
         if worksheet == "":
             for sht in wb.Worksheets:
                 for cht in sht.ChartObjects():
                     if chartname == "":
-                        self._save_chart(cht)
+                        ImageName = self._save_chart(sht.Name,cht)
                     else:
                         if chartname == cht.Name:
-                            self._save_chart(cht)
+                            ImageName = self._save_chart(sht.Name,cht)
+                    self.ChartDetail.append(dict(workbookpath = self.WorkbookDirectory,workbookfile = self.WorkbookFilename, sheetname = sht.Name, chartname = cht.Name, imagename = ImageName))
         else:
             sht = wb.Worksheets(worksheet)
             for cht in sht.ChartObjects():
                 if chartname == "":
-                    self._save_chart(cht)
+                    ImageName = self._save_chart(sht.Name,cht)
                 else:
                     if chartname == cht.Name:
-                        self._save_chart(cht)
-
-
+                        ImageName = self._save_chart(sht.Name,cht)
+                self.ChartDetail.append(dict(workbookpath = self.WorkbookDirectory,workbookfile = self.WorkbookFilename, sheetname = sht.Name, chartname = cht.Name, imagename = ImageName))
+        
 
     def _change_sheet(self,wb,worksheet):
         try:
@@ -80,11 +82,12 @@ class Pyxlchart(object):
         
 
 
-    def _save_chart(self,chartObject):
-        imagename = self._get_filename(chartObject.Name)
+    def _save_chart(self,sheetname,chartObject):
+        imagename = sheetname + '-' + self._get_filename(chartObject.Name)
         savepath = os.path.join(self.ExportPath,imagename)
         print savepath
         chartObject.Chart.Export(savepath,self.ImageType)
+        return imagename
 
 
     
@@ -94,12 +97,14 @@ class Pyxlchart(object):
         Replaces white space in self.WorkbookFileName with the value given in self.ReplaceWhiteSpaceChar
         If self.ReplaceWhiteSpaceChar is an empty string then self.WorkBookFileName is left as is
         """
+        
         if self.ImageFilename == '':
             self.ImageFilename == chartname
 
         if self.ReplaceWhiteSpaceChar != '':
-            chartname.replace(' ',self.ReplaceWhiteSpaceChar)
-
+            chartname = chartname.replace(' ',self.ReplaceWhiteSpaceChar)
+        
+        
         if self.ImageFilename != "":
             return self.ImageFilename + "_" + chartname + "." + self.ImageType
         else:

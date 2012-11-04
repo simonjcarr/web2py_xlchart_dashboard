@@ -1,0 +1,15 @@
+{{extend 'layout.html'}}
+<style>
+    .registered
+    {
+        background-color: #00CC00;
+        display:inline-block;
+    }
+</style>
+<h3>Charts found in workbook</h3>
+Select a chart below to register it.<br>
+<hr>
+{{for chartfile in chartfiles:}}
+{{=chartfile['chartimage']}}"<br>
+<div id='{{=chartfile['divname']}}' class='registered'></div>
+{{pass}}

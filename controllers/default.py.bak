@@ -35,27 +35,42 @@ def register_chart_part1():
     return dict(workbookGrid = grid)
     
 def list_workbook_charts():
-    
+    import os
     wbid = request.vars['wbid']
     rsPath = db(db.workbook.id == wbid).select(db.workbook.path)
     wbPath = rsPath[0].path
-    
-    get_chart(wbPath)
-    return wbPath
+    ChartDetails = get_chart(wbPath)
+    chartfiles = []
+    for ChartDetail in ChartDetails['chartdetail']: 
+        div_name = ChartDetail['sheetname'].replace(' ','_') + '_' + ChartDetail['chartname'].replace(' ','_')  
+        chartfiles.append(dict(divname = div_name,chartimage = A(IMG(_src=URL(ChartDetails['webfolder'],str(ChartDetail['imagename'])),_width="200",_height="200"),callback = URL(f='registerchart',vars={'wbid':wbid,'sheetname':ChartDetail['sheetname'],'chartname':ChartDetail['chartname']}), target=div_name)))
+    #for root, dirs, files in os.walk(ChartDetails['osfolder']):
+    #    for file in files:
+    #        chartfiles.append(IMG(_src=URL(ChartDetails['webfolder'],file),_width="200",_height="200"))
+    return dict(chartfiles=chartfiles)
 
 def get_chart(workbookPath, imageName="XLChart"):
-    import os
+    import os, time
     wbPath, wbFile = os.path.split(workbookPath)
     import pythoncom
-    pythoncom.CoInitialize(wbFilePath, imageName = "pyXLChart")
+    pythoncom.CoInitialize()
     from pyxlchart import Pyxlchart
     
     ChartObj = Pyxlchart()
     ChartObj.WorkbookDirectory = wbPath
     ChartObj.WorkbookFilename = wbFile
     ChartObj.ImageFilename = imageName
-    ChartObj.ExportPath = "d:\\pycharts"
-    ChartObj.start_export()
+    timeDir = str(time.time())
+    os.makedirs(os.path.join(request.folder, 'static\\images\\temp', timeDir))
+    exportFolder = os.path.join(request.folder, 'static\\images\\temp', timeDir)
+    ChartObj.ExportPath =  exportFolder
+    ChartObj.ReplaceWhiteSpaceChar = '_'
+    ChartDetailList = ChartObj.start_export()
+    ChartDetails = dict(chartdetail = ChartDetailList, webfolder = os.path.join('static/images/temp/',timeDir),osfolder = exportFolder)
+    return ChartDetails
+
+def registerchart():
+    return "You clicked me"
 
 def user():
     """
