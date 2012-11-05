@@ -25,6 +25,8 @@ class Pyxlchart(object):
         self.ReplaceWhiteSpaceChar = '_'
         self.ImageType = 'jpg'
         self.ChartDetail = []
+        self.ImageCount = 0
+        self.WorkbookDirty = False
     def __del__(self):
         pass
     def start_export(self):
@@ -42,12 +44,14 @@ class Pyxlchart(object):
         excel.Visible = False
         wb = excel.Workbooks.Open(os.path.join(self.WorkbookDirectory ,self.WorkbookFilename))
         self._get_Charts_In_Worksheet(wb,self.SheetName,self.ChartName)
+        if self.WorkbookDirty == True:
+            wb.Save()
         wb.Close(False)
         excel.Quit()
 
 
     def _get_Charts_In_Worksheet(self,wb,worksheet = "", chartname = ""):
-        
+        import time
         if worksheet != "" and chartname != "":
             sht = self._change_sheet(wb,worksheet)
             cht = sht.ChartObjects(chartname)
@@ -56,21 +60,31 @@ class Pyxlchart(object):
         
         if worksheet == "":
             for sht in wb.Worksheets:
+                sheetname = sht.Name.replace(' ','_')
                 for cht in sht.ChartObjects():
+                    renamechart = "pyxl" + str(time.time())
+                    if str(cht.Name)[:4] != 'pyxl':
+                        cht.Name = renamechart
+                        self.WorkbookDirty = True
                     if chartname == "":
-                        ImageName = self._save_chart(sht.Name,cht)
+                        ImageName = self._save_chart(sheetname,cht)
                     else:
                         if chartname == cht.Name:
-                            ImageName = self._save_chart(sht.Name,cht)
+                            ImageName = self._save_chart(sheetname,cht)
                     self.ChartDetail.append(dict(workbookpath = self.WorkbookDirectory,workbookfile = self.WorkbookFilename, sheetname = sht.Name, chartname = cht.Name, imagename = ImageName))
         else:
             sht = wb.Worksheets(worksheet)
             for cht in sht.ChartObjects():
+                renamechart = "pyxl" + str(time.time())
+                if str(cht.Name)[:4] != 'pyxl':
+                    cht.Name = renamechart
+                    self.WorkbookDirty = True
+                sheetname = sht.Name.replace(' ','_')
                 if chartname == "":
-                    ImageName = self._save_chart(sht.Name,cht)
+                    ImageName = self._save_chart(sheetnam,cht)
                 else:
                     if chartname == cht.Name:
-                        ImageName = self._save_chart(sht.Name,cht)
+                        ImageName = self._save_chart(sheetname,cht)
                 self.ChartDetail.append(dict(workbookpath = self.WorkbookDirectory,workbookfile = self.WorkbookFilename, sheetname = sht.Name, chartname = cht.Name, imagename = ImageName))
         
 
@@ -83,7 +97,8 @@ class Pyxlchart(object):
 
 
     def _save_chart(self,sheetname,chartObject):
-        imagename = sheetname + '-' + self._get_filename(chartObject.Name)
+        self.ImageCount += 1
+        imagename = str(self.ImageCount) + '-' + sheetname + '-' + self._get_filename(chartObject.Name)
         savepath = os.path.join(self.ExportPath,imagename)
         print savepath
         chartObject.Chart.Export(savepath,self.ImageType)

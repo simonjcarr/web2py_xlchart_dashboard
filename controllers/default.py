@@ -41,8 +41,11 @@ def list_workbook_charts():
     wbPath = rsPath[0].path
     ChartDetails = get_chart(wbPath)
     chartfiles = []
+    DivCount = 0
     for ChartDetail in ChartDetails['chartdetail']: 
-        div_name = ChartDetail['sheetname'].replace(' ','_') + '_' + ChartDetail['chartname'].replace(' ','_')  
+        DivCount += 1
+        div_name = "div" + str(DivCount)
+        #div_name = ChartDetail['sheetname'].replace(' ','_') + '_' + ChartDetail['chartname'].replace(' ','_')  
         chartfiles.append(dict(divname = div_name,chartimage = A(IMG(_src=URL(ChartDetails['webfolder'],str(ChartDetail['imagename'])),_width="200",_height="200"),callback = URL(f='registerchart',vars={'wbid':wbid,'sheetname':ChartDetail['sheetname'],'chartname':ChartDetail['chartname']}), target=div_name)))
     #for root, dirs, files in os.walk(ChartDetails['osfolder']):
     #    for file in files:
