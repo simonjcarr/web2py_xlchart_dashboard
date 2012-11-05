@@ -85,7 +85,7 @@ use_janrain(auth, filename='private/janrain.key')
 ## after defining tables, uncomment below to enable auditing
 # auth.enable_record_versioning(db)
 db.define_table('workbook',
-Field('path',requires=[IS_NOT_EMPTY(),IS_NOT_IN_DB(db,'workbooks.path')]),
+Field('path',requires=[IS_NOT_EMPTY(),IS_NOT_IN_DB(db,'workbook.path')]),
 Field('title',requires=IS_NOT_EMPTY()),
 format="%(title)s",
 )
@@ -129,3 +129,11 @@ Field('id_section',db.dashboard_section),
 Field('width','integer'),
 Field('height','integer'),
 )
+
+
+#Modal Functions
+def checkchartindb(chartname):
+    if db(db.chart.chartName == chartname).count() > 0:
+        return "Chart Already registered"
+    else:
+        return ''

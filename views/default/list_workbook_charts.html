@@ -10,6 +10,8 @@
 Select a chart below to register it.<br>
 <hr>
 {{for chartfile in chartfiles:}}
-{{=chartfile['chartimage']}}"<br>
-<div id='{{=chartfile['divname']}}' class='registered'></div><br>
+
+{{=chartfile['chartimage']}}<br>
+
+<div id='{{=chartfile['divname']}}' class='registered'>{{=checkchartindb(chartfile['chartname'])}}</div><br>
 {{pass}}

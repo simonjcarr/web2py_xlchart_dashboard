@@ -129,3 +129,11 @@ Field('id_section',db.dashboard_section),
 Field('width','integer'),
 Field('height','integer'),
 )
+
+
+#Modal Functions
+def checkchartindb(chartname):
+    if db(db.chart.chartName == chartname).count() > 0:
+        return "Chart Already registered"
+    else:
+        return False
