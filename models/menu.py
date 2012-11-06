@@ -26,6 +26,25 @@ response.menu = [
     (T('Home'), False, URL('default', 'index'), [])
 ]
 
+response.menu = [
+    (T('Dashboard'), False, URL('default', 'index'), 
+        [
+        (T('My Dashboard'), False, URL('default', 'index'),
+            [
+                (T('Manage Dashboards'), False, URL('dashboard', 'index')),
+                (T('Add Dashboard'), False, URL('default', 'add_workbook')),
+                (T('Manage Projects'), False, URL('default', 'add_workbook')),
+                (T('Add Project'), False, URL('default', 'add_workbook'))
+            ]),
+        (T('Workbooks'), False, URL('default', 'index'),
+            [
+                 (T('Add Workbook'), False, URL('default', 'add_workbook'))
+            ])
+        
+        ])
+]
+
+
 #########################################################################
 ## provide shortcuts for development. remove in production
 #########################################################################

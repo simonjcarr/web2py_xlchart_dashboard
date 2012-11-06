@@ -210,3 +210,13 @@
 [2012-11-05 21:28:44] EDIT web2py_xlchart_dashboard/models/db.py: 0
 [2012-11-05 21:29:41] EDIT web2py_xlchart_dashboard/views/default/list_workbook_charts.html: 0
 [2012-11-05 21:29:54] EDIT web2py_xlchart_dashboard/views/default/list_workbook_charts.html: 0
+[2012-11-06 12:00:49] EDIT web2py_xlchart_dashboard/models/menu.py: 3
+[2012-11-06 12:01:26] EDIT web2py_xlchart_dashboard/models/menu.py: -2
+[2012-11-06 12:15:45] EDIT web2py_xlchart_dashboard/models/menu.py: 0
+[2012-11-06 12:21:17] EDIT web2py_xlchart_dashboard/models/menu.py: 2
+[2012-11-06 12:23:19] EDIT web2py_xlchart_dashboard/models/menu.py: 0
+[2012-11-06 12:27:51] EDIT web2py_xlchart_dashboard/models/menu.py: 6
+[2012-11-06 12:31:15] EDIT web2py_xlchart_dashboard/models/menu.py: 7
+[2012-11-06 12:32:56] CREATE dashboard.py: 0
+[2012-11-06 12:35:01] EDIT web2py_xlchart_dashboard/controllers/dashboard.py: 1
+[2012-11-06 12:35:38] EDIT web2py_xlchart_dashboard/models/menu.py: 0

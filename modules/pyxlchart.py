@@ -42,7 +42,9 @@ class Pyxlchart(object):
         """
         excel = Dispatch("excel.application")
         excel.Visible = False
-        wb = excel.Workbooks.Open(os.path.join(self.WorkbookDirectory ,self.WorkbookFilename))
+        excel.EnableEvents = False
+        wb = excel.Workbooks.Open(os.path.join(self.WorkbookDirectory ,self.WorkbookFilename), True)
+        excel.EnableEvents = True
         self._get_Charts_In_Worksheet(wb,self.SheetName,self.ChartName)
         if self.WorkbookDirty == True:
             wb.Save()
