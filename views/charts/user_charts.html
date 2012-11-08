@@ -1,0 +1,75 @@
+{{extend 'layout.html'}}
+    <style>
+    
+    #usercharts{
+        float: left;
+    }
+    #allcharts{
+        margin-left: 50px;
+        float:left;
+    }
+    .chartholder{
+      vertical-align:middle;  
+    }
+    .chartimage{
+        float:left;
+        margin: 5px
+    }
+    .charttext{
+        float:left;
+        vertical-align:middle;
+        
+    }
+    .subscribe_form textarea{
+        width:150px;
+        height:75px;
+    }
+    
+    #user_chart_title{
+        width:150px;
+    }
+    
+    .subscribed{
+        background-color:#00ff00;
+        font-weight: bold;
+    }
+    
+</style>
+
+<h2>Manage my charts</h2>
+<div id="usercharts">
+    <h4>My Charts</h4>
+    {{for chart in mycharts:}}
+    <div class="chartholder">
+    	<div class="chartimage">
+    		{{=IMG(_src=URL('download',args=chart.id_chart.file),_width='150px')}}
+        </div>
+        <div class="charttext">
+            
+        </div>
+    </div>
+	{{pass}}
+</div>
+
+<div id="allcharts">
+    <h4>Available Charts</h4>
+    {{for chart in allcharts:}}
+    <div class="chartholder">
+    	<div class="chartimage">
+    		{{=IMG(_src=URL('download',args=chart.file),_width='150px')}}
+        </div>
+        <div class="charttext">
+            Workbook: {{=chart.id_workbook.title}}<BR>
+            Sheet: {{=chart.worksheet}}<BR>
+            {{if is_my_chart(chart.chartName):}}
+            <span class="subscribed">You already subscribe to this chart</span>
+            {{else:}}
+            {{=A('Add to My Charts',_href=URL('subscribe_form',vars={'id_chart': chart.id}), cid=str(chart.chartName).replace('.','_'))}}
+           
+            {{pass}}
+            <div id="p"></div>
+            <div id="{{=str(chart.chartName).replace('.','_')}}" class="subscribe_form"></div>
+        </div>
+    </div>
+	{{pass}}
+</div>
