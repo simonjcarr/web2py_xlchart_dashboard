@@ -31,7 +31,7 @@ response.menu = [
         [
         (T('My Dashboard'), False, URL('default', 'index'),
             [
-                (T('Manage Dashboards'), False, URL('dashboard', 'index')),
+                (T('Manage Dashboards'), False, URL(c='dashboard', f='manage_dashboard')),
                 (T('Add Dashboard'), False, URL('default', 'add_workbook')),
                 (T('Manage Projects'), False, URL('default', 'add_workbook')),
                 (T('Add Project'), False, URL('default', 'add_workbook'))

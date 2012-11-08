@@ -46,7 +46,11 @@ def list_workbook_charts():
         DivCount += 1
         div_name = "div" + str(DivCount)
         #div_name = ChartDetail['sheetname'].replace(' ','_') + '_' + ChartDetail['chartname'].replace(' ','_')  
-        chartfiles.append(dict(divname = div_name,chartimage = A(IMG(_src=URL(ChartDetails['webfolder'],str(ChartDetail['imagename'])),_width="200",_height="200"),callback = URL(f='registerchart',vars={'wbid':wbid,'sheetname':ChartDetail['sheetname'],'chartname':ChartDetail['chartname']}), target=div_name)))
+        if checkchartindb(ChartDetail['chartname']):
+            chartimage = IMG(_src=URL(ChartDetails['webfolder'],str(ChartDetail['imagename'])),_width="200",_height="200")
+        else:
+            chartimage = A(IMG(_src=URL(ChartDetails['webfolder'],str(ChartDetail['imagename'])),_width="200",_height="200"),callback = URL(f='registerchart',vars={'wbid':wbid,'sheetname':ChartDetail['sheetname'],'chartname':ChartDetail['chartname'],'imagename':ChartDetail['imagename'],'webfolder':ChartDetails['webfolder']}), target=div_name)
+        chartfiles.append(dict(chartname = ChartDetail['chartname'], divname = div_name,chartimage = chartimage, chartfolder = ChartDetails['webfolder'] ))
     #for root, dirs, files in os.walk(ChartDetails['osfolder']):
     #    for file in files:
     #        chartfiles.append(IMG(_src=URL(ChartDetails['webfolder'],file),_width="200",_height="200"))
@@ -73,8 +77,16 @@ def get_chart(workbookPath, imageName="XLChart"):
     return ChartDetails
 
 def registerchart():
-    chartid = db.chart.insert(chartName=request.vars['chartname'],id_workbook=request.vars['wbid'],worksheet=request.vars['sheetname'])
-    return "Chart registered with id " + str(chartid)
+    import os
+    if db(db.chart.chartName==request.vars['chartname']).count() == 0:
+        imagepath = os.path.join(request.folder,request.vars['webfolder'],request.vars['imagename'])
+        print imagepath
+        #stream = open(imagepath,'rb')
+
+        #chartid = db.chart.insert(chartName=request.vars['chartname'],id_workbook=request.vars['wbid'],worksheet=request.vars['sheetname'],file=stream)
+        return "Chart registered with id " + str(chartid)
+    else:
+        return "Chart already registered"
 
 
 def user():

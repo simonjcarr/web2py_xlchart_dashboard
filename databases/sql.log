@@ -183,3 +183,9 @@ CREATE TABLE wiki_media(
     modified_by INTEGER REFERENCES auth_user (id) ON DELETE CASCADE
 );
 success!
+timestamp: 2012-11-06T18:41:51.312000
+ALTER TABLE chart ADD file CHAR(512);
+timestamp: 2012-11-06T21:40:18.921000
+ALTER TABLE chart_position ADD chart INTEGER REFERENCES chart (id) ON DELETE CASCADE;
+timestamp: 2012-11-07T12:08:41.125000
+ALTER TABLE dashboard_section ADD chart INTEGER REFERENCES user_chart (id) ON DELETE CASCADE;

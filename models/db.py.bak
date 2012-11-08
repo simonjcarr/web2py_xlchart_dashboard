@@ -95,32 +95,34 @@ db.define_table('chart',
 Field('chartName'),
 Field('id_workbook',db.workbook),
 Field('worksheet'),
-format="%(chartName)s",
+Field('file','upload'),
+format="%(id_workbook)s %(chartName)s",
 )
 
 db.define_table('user_chart',
-Field('id_user',db.auth_user),
-Field('id_chart',db.chart,requires=IS_NOT_EMPTY()),
-Field('title'),
+Field('id_user',db.auth_user,readable=False,default=auth.user_id),
+Field('id_chart','reference chart'),
+Field('title', requires=IS_NOT_EMPTY()),
 Field('description','text'),
 format="%(title)s",
 )
 
 db.define_table('dashboard',
-Field('id_user',db.auth_user),
+Field('id_user',db.auth_user,readable=False,writable=False,default=auth.user_id),
 Field('name', requires=IS_NOT_EMPTY()),
-Field('title'),
+Field('title',label='Display Title',requires=IS_NOT_EMPTY()),
 Field('description','text'),
 format="%(name)s",
 )
 
 db.define_table('dashboard_section',
-Field('id_dashboard',db.dashboard),
-Field('title',requires=IS_NOT_EMPTY),
+Field('id_dashboard',db.dashboard,writable=False),
+Field('title',requires=IS_NOT_EMPTY()),
 Field('bgcolor'),
 Field('row','integer',requires=IS_NOT_EMPTY()),
 Field('col','integer',requires=IS_NOT_EMPTY()),
 Field('colspan','integer'),
+Field('chart','reference user_chart'),
 format="%(title)s",
 )
 
@@ -128,12 +130,24 @@ db.define_table('chart_position',
 Field('id_section',db.dashboard_section),
 Field('width','integer'),
 Field('height','integer'),
+Field('chart','reference chart'),
 )
 
 
 #Modal Functions
 def checkchartindb(chartname):
     if db(db.chart.chartName == chartname).count() > 0:
-        return "Chart Already registered"
+        return True
     else:
-        return ''
+        return False
+        
+def is_my_chart(chartname):
+    count_charts = db(
+    (db.user_chart.id_user == auth.user_id) & ##all charts of the user
+    (db.chart.chartName == 'abc') & ##all charts named 'abc'
+    (db.user_chart.id_chart == db.chart.id) ##the actual relation
+    ).count()
+    if count_charts > 0:
+        return True
+    else:
+        return False
