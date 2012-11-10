@@ -32,13 +32,20 @@ response.menu = [
         (T('My Dashboard'), False, URL('default', 'index'),
             [
                 (T('Manage Dashboards'), False, URL(c='dashboard', f='manage_dashboard')),
-                (T('Add Dashboard'), False, URL('default', 'add_workbook')),
+               
                 (T('Manage Projects'), False, URL('default', 'add_workbook')),
                 (T('Add Project'), False, URL('default', 'add_workbook'))
             ]),
-        (T('Workbooks'), False, URL('default', 'index'),
+        
+        (T('Charts'), False, URL('default', 'index'),
             [
-                 (T('Add Workbook'), False, URL('default', 'add_workbook'))
+                (T('Subscribe to Charts'), False, URL(c='charts', f='user_charts')),
+            ]),
+        
+        
+        (T('Workbooks'), False, URL('default', 'register_chart_part1'),
+            [
+                 (T('Add Workbook'), False, URL('default', 'register_chart_part1'))
             ])
         
         ])

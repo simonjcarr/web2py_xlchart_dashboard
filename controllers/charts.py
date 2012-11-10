@@ -26,8 +26,9 @@ def subscribe_form():
         response.flash = 'Please complete the form to register the chart.'
     return form
 
-def subscribe():
-    pass
+def unsubscribe():
+    db(db.user_chart.id == request.vars['id_chart']).delete()
+    redirect(URL('user_charts'))
     
 def download():
     return response.download(request, db)

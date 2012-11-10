@@ -1,6 +1,8 @@
 {{left_sidebar_enabled,right_sidebar_enabled=False,('message' in globals())}}
 {{extend 'layout.html'}}
-
+ 
+<a href="#" id="modal-link">Click Me</a>
+<div id="modal-dialog" title="Download complete">This is some test Text</div>
 {{if 'message' in globals():}}
 <h3>{{=message}}</h3>
 

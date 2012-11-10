@@ -62,7 +62,8 @@ class Pyxlchart(object):
         
         if worksheet == "":
             for sht in wb.Worksheets:
-                sheetname = sht.Name.replace(' ','_')
+                print sht.Name
+                sheetname = sht.Name.replace(' ','_').replace('(','_').replace(')','_')
                 for cht in sht.ChartObjects():
                     renamechart = "pyxl" + str(time.time())
                     if str(cht.Name)[:4] != 'pyxl':
@@ -81,9 +82,9 @@ class Pyxlchart(object):
                 if str(cht.Name)[:4] != 'pyxl':
                     cht.Name = renamechart
                     self.WorkbookDirty = True
-                sheetname = sht.Name.replace(' ','_')
+                sheetname = sht.Name.replace(' ','_').replace('(','_').replace(')','_')
                 if chartname == "":
-                    ImageName = self._save_chart(sheetnam,cht)
+                    ImageName = self._save_chart(sheetname,cht)
                 else:
                     if chartname == cht.Name:
                         ImageName = self._save_chart(sheetname,cht)
@@ -102,7 +103,7 @@ class Pyxlchart(object):
         self.ImageCount += 1
         imagename = str(self.ImageCount) + '-' + sheetname + '-' + self._get_filename(chartObject.Name)
         savepath = os.path.join(self.ExportPath,imagename)
-        print savepath
+        
         chartObject.Chart.Export(savepath,self.ImageType)
         return imagename
 
@@ -142,4 +143,3 @@ if __name__ == "__main__":
     
     print "This file does not currently allow direct access"
     print "Please import PyXLChart and run start_export()"
-    

@@ -31,14 +31,14 @@ response.menu = [
         [
         (T('My Dashboard'), False, URL('default', 'index'),
             [
-                (T('Manage Dashboards'), False, URL('dashboard', 'index')),
-                (T('Add Dashboard'), False, URL('default', 'add_workbook')),
+                (T('Manage Dashboards'), False, URL(c='dashboard', f='manage_dashboard')),
+               
                 (T('Manage Projects'), False, URL('default', 'add_workbook')),
                 (T('Add Project'), False, URL('default', 'add_workbook'))
             ]),
-        (T('Workbooks'), False, URL('default', 'index'),
+        (T('Workbooks'), False, URL('default', 'register_chart_part1'),
             [
-                 (T('Add Workbook'), False, URL('default', 'add_workbook'))
+                 (T('Add Workbook'), False, URL('default', 'register_chart_part1'))
             ])
         
         ])

@@ -1,0 +1,98 @@
+{{extend 'layout.html'}}
+<style>
+    .dashboard{
+        padding: 5px 5px 5px 5px;
+        border-style: solid;
+        border-width: 1pt;
+        border-color: #505050;
+        margin-left: 25px;
+        margin-bottom: 5px;
+    }
+    .dash_detail{
+        border-bottom-style: solid;
+        border-bottom-width: 2pt;
+        border-bottom-color: #505050;
+    }
+    .section_detail{
+        padding-left:20pt;
+    }
+    .dash_name{
+        float:left;
+        font-size: 16pt;
+        font-weight: bold;
+        padding-right:10pt;
+    }
+    .dash_title{
+        clear:All;
+        font-size:12pt;
+    }
+    .dash_description{
+        font-size:10pt;
+    }
+    .section_title{
+        border-bottom-style:solid;
+        border-bottom-width:1pt;
+        border_bottom-color:#FFFFFF;
+        padding-left:10pt;
+        
+        
+    }
+    .section_header{
+        font-size:12pt;
+        font-weight:bold;
+        
+        padding-right: 10pt;
+    }
+    .confirm_form{
+        font-size: 8pt;
+       
+    }
+    .delete_section{
+        font-size: 8pt;
+        padding-right: 5pt; 
+    }
+    .select_chart_form{
+        border-style: solid;
+        border-width: 1pt;
+        border-color: #000000;
+    }
+</style>
+<h2>My Dashboards</h2>
+<div id="add_dashboard">
+    {{=A('Add new dashboard',_href=URL('add_dashboard'))}}
+</div>
+{{for dashboard in dash_data:}}
+<div class="dashboard">
+    <div class="dash_detail">
+        <div class="dash_links">| {{=A('Edit',_href=URL('edit_dashboard'))}} | {{=A('Delete',_href=URL('delete_section',vars={'sid': dashboard.id}), cid='id' + str(dashboard.id))}} |</div>
+        <div id="id{{=str(dashboard.id)}}" class="confirm_form"></div>
+        <div class="dash_name">{{=A(dashboard.name,_href=URL('view_dashboard',vars={'dbid':dashboard.id}))}}</div><div class="dash_title">({{=dashboard.title}})</div>
+        <div class="dash_description">{{=dashboard.description}}</div>
+    </div>
+    <div class="section_detail">
+            <div class="dash_sections"> 
+                <div class="section_header">Sections</div>
+                <div id="add_section">
+                    {{=A('Add new section',_href=URL('add_section',vars={'dbid':dashboard.id}))}}
+				</div>
+                {{for dashboard_section in dashboard.dashboard_section.select():}}
+                <div class="section_title">
+                    <span class="delete_section">| {{=A('Charts',_href=URL('select_charts',vars={'sid':dashboard_section.id}),cid="modal-dialog",_class="modal-link")}} | {{=A('Edit',_href=URL('edit_section',vars={'sid':dashboard_section.id}),cid='modal-dialog',_class='modal-link')}} | {{=A('Delete',_href=URL('delete_section',vars={'sid': dashboard_section.id}), cid='modal-dialog',_class='modal-link')}} |</span>{{=dashboard_section.title}}
+                    <div class='chart_small_image'>
+                        {{for section_chart in dashboard_section.section_charts.select():}}
+                        {{=A(IMG(_src=URL('download',args=section_chart.chart.file),_width='50px'),_href=URL('delete_chart',vars={'sid':section_chart.id}), cid='modal-dialog',_class='modal-link')}}
+                        {{pass}}
+                    </div>      
+                </div>
+               
+                <div id="id{{=str(dashboard_section.id)}}" class="confirm_form"></div>
+                
+                {{pass}}
+                
+    		</div>
+     </div>
+</div>
+
+{{pass}}
+
+<div id="modal-dialog" title="PyXLCharts">This is some test Text</div>

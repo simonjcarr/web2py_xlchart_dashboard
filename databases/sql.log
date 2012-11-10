@@ -189,3 +189,29 @@ timestamp: 2012-11-06T21:40:18.921000
 ALTER TABLE chart_position ADD chart INTEGER REFERENCES chart (id) ON DELETE CASCADE;
 timestamp: 2012-11-07T12:08:41.125000
 ALTER TABLE dashboard_section ADD chart INTEGER REFERENCES user_chart (id) ON DELETE CASCADE;
+timestamp: 2012-11-08T12:52:05.328000
+CREATE TABLE section_charts(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    id_section INTEGER REFERENCES dashboard_section (id) ON DELETE CASCADE,
+    chart INTEGER REFERENCES chart (id) ON DELETE CASCADE,
+    title CHAR(512),
+    description CHAR(512),
+    row INTEGER,
+    col INTEGER,
+    bgcolor CHAR(512)
+);
+success!
+timestamp: 2012-11-09T18:02:31.468000
+ALTER TABLE section_charts ADD width DOUBLE;
+timestamp: 2012-11-09T18:21:51.843000
+ALTER TABLE dashboard_section ADD width DOUBLE;
+timestamp: 2012-11-09T19:06:40.796000
+ALTER TABLE dashboard_section ADD chartwidth DOUBLE;
+timestamp: 2012-11-09T19:40:28.718000
+ALTER TABLE dashboard_section ADD titlesize INTEGER;
+timestamp: 2012-11-09T19:40:28.812000
+ALTER TABLE dashboard_section ADD centre CHAR(512);
+timestamp: 2012-11-09T23:10:08.328000
+ALTER TABLE chart ADD lastupdated TIMESTAMP;
+timestamp: 2012-11-09T23:13:18.265000
+ALTER TABLE user_chart ADD updatehours INTEGER;

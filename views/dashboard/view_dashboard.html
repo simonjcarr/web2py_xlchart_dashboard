@@ -1,0 +1,45 @@
+{{extend 'layout.html'}}
+<style>
+    #dashboard{
+        width: 100%;
+        background-color: #000000;
+        float: left;
+    }
+    
+    .dashboard-section{
+        float:left;
+        margin: .5%;
+        width: 48%;
+        background-color: #505050;
+    }
+    .section-chart{
+        
+        padding: .5%;
+        background-color: #505050;
+        width:49%;
+        display: inline-block;
+    }
+    .section-title{
+        background-color: #ffffff;
+        padding: 2px;
+        border-bottom-style: solid;
+        border-bottom-width: 1px;
+        border-bottom-color: #000000;
+    }
+</style>
+
+<h1>{{=dashboard_title}}</h1>
+<div id="dashboard">
+    {{for section in sections:}}
+    <div class="dashboard-section" style="width:{{=section.width-1}}%; {{if section.centre == 'True':}} text-align: center;{{pass}}">
+        <div class="section-title" style="font-size:{{=section.titlesize}}pt">{{=section.title}}</div>
+            {{for section_chart in db(db.section_charts.id_section == section.id).select(db.section_charts.ALL):}}
+          
+            <div  class="section-chart" {{if section_chart.width > 0 or section.chartwidth > 0:}}style="width:{{if section_chart.width > 0:}}{{=section_chart.width - 2}}{{else:}}{{=section.chartwidth - 2}}{{pass}}{{pass}}%;">
+                {{=IMG(_src=URL('download',args=section_chart.chart.file))}}
+            </div>
+        	
+            {{pass}}
+        </div>
+    {{pass}}
+</div>

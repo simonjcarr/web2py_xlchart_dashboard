@@ -96,6 +96,7 @@ Field('chartName'),
 Field('id_workbook',db.workbook),
 Field('worksheet'),
 Field('file','upload'),
+Field('lastupdated','datetime',default=request.now),
 format="%(id_workbook)s %(chartName)s",
 )
 
@@ -104,6 +105,7 @@ Field('id_user',db.auth_user,readable=False,default=auth.user_id),
 Field('id_chart','reference chart'),
 Field('title', requires=IS_NOT_EMPTY()),
 Field('description','text'),
+Field('updatehours',integer,default=24),
 format="%(title)s",
 )
 
@@ -116,20 +118,28 @@ format="%(name)s",
 )
 
 db.define_table('dashboard_section',
-Field('id_dashboard',db.dashboard,writable=False),
+Field('id_dashboard',db.dashboard,writable=False,readable=False),
 Field('title',requires=IS_NOT_EMPTY()),
+Field('titlesize','integer',default=12,requires=IS_INT_IN_RANGE(1,200),label='Title Size (PT)'),
 Field('bgcolor'),
-Field('row','integer',requires=IS_NOT_EMPTY()),
-Field('col','integer',requires=IS_NOT_EMPTY()),
-Field('colspan','integer'),
-Field('chart','reference user_chart'),
+Field('width','decimal(2,2)',requires=IS_DECIMAL_IN_RANGE(1,100),label='Width(%)',default=50.00),
+Field('chartwidth', 'decimal(2,2)',requires=IS_DECIMAL_IN_RANGE(0,100),label='Chart Wdith(%)'),
+Field('centre',requires=IS_IN_SET(['True','False']),default='True',label='Centre Charts?'),
 format="%(title)s",
+)
+
+db.define_table('section_charts',
+Field('id_section',db.dashboard_section),
+Field('chart','reference chart'),
+Field('title'),
+Field('description','text'),
+Field('width','decimal(2,2)',requires=IS_DECIMAL_IN_RANGE(1,100),label='Width(%)',default=50.00),
+Field('bgcolor'),
 )
 
 db.define_table('chart_position',
 Field('id_section',db.dashboard_section),
 Field('width','integer'),
-Field('height','integer'),
 Field('chart','reference chart'),
 )
 
@@ -144,7 +154,7 @@ def checkchartindb(chartname):
 def is_my_chart(chartname):
     count_charts = db(
     (db.user_chart.id_user == auth.user_id) & ##all charts of the user
-    (db.chart.chartName == 'abc') & ##all charts named 'abc'
+    (db.chart.chartName == chartname) & ##all charts named 'abc'
     (db.user_chart.id_chart == db.chart.id) ##the actual relation
     ).count()
     if count_charts > 0:
