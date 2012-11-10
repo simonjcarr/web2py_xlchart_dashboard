@@ -43,7 +43,7 @@ def add_section():
         response.flash = "There were errors in the form"
     else:
         response.flash = "Please complete the form."
-    return dict(form = form)
+    return form
 
 @auth.requires_login()
 def delete_section():

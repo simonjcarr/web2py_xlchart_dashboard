@@ -1,24 +1,24 @@
 {{extend 'layout.html'}}
-    <script>
-    $(function() {
-        $( "#dialog" ).dialog();
-    });
-    </script>
+    
     
     
     <style>
         
-      
+        #page-frame{
+            width: 400px;
+        }
         
     #usercharts{
         float: left;
         width: 200px;
-        margin-right: 50px
+        margin-right: 50px;
          
     }
     #allcharts{
         
         padding-left: 50px;
+        width:150px;
+        margin-right: 50px;
         float:left;
         border-left-size: 1pt;
         border-left-style: solid;
@@ -27,6 +27,7 @@
     .chartholder{
       clear:both;
       vertical-align:middle;  
+      
     }
     .chartimage{
         float:left;
@@ -72,10 +73,9 @@
     }
     
 </style>
-<div id="dialog" title="Basic dialog">
-    <p>This is the default dialog which is useful for displaying information. The dialog window can be moved, resized and closed with the 'x' icon.</p>
-</div>
+
 <h2>Chart Subscriptions</h2>
+<div id="page-frame">
 <div id="usercharts">
     <h4>My Chart Subscriptions</h4>
     {{for chart in mycharts:}}
@@ -112,4 +112,5 @@
         </div>
     </div>
 	{{pass}}
+</div>
 </div>

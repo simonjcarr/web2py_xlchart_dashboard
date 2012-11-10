@@ -1,5 +1,9 @@
 {{extend 'layout.html'}}
 <style>
+    img{
+        max-width: 50px;
+        height: auto;
+    }
     .dashboard{
         padding: 5px 5px 5px 5px;
         border-style: solid;
@@ -77,10 +81,10 @@
 				</div>
                 {{for dashboard_section in dashboard.dashboard_section.select():}}
                 <div class="section_title">
-                    <span class="delete_section">| {{=A('Charts',_href=URL('select_charts',vars={'sid':dashboard_section.id}),cid="modal-dialog",_class="modal-link")}} | {{=A('Edit',_href=URL('edit_section',vars={'sid':dashboard_section.id}),cid=modal-dialog,_class='modal-link')}} | {{=A('Delete',_href=URL('delete_section',vars={'sid': dashboard_section.id}), cid='modal-dialog',_class='modal-link')}} |</span>{{=dashboard_section.title}}
+                    <span class="delete_section">| {{=A('Charts',_href=URL('select_charts',vars={'sid':dashboard_section.id}),cid="modal-dialog",_class="modal-link")}} | {{=A('Edit',_href=URL('edit_section',vars={'sid':dashboard_section.id}),cid='modal-dialog',_class='modal-link')}} | {{=A('Delete',_href=URL('delete_section',vars={'sid': dashboard_section.id}), cid='modal-dialog',_class='modal-link')}} |</span>{{=dashboard_section.title}}
                     <div class='chart_small_image'>
                         {{for section_chart in dashboard_section.section_charts.select():}}
-                        {{=A(IMG(_src=URL('download',args=section_chart.chart.file),_width='50px'),_href=URL('delete_chart',vars={'sid':section_chart.id}), cid='modal-dialog',_class='modal-link')}}
+                        {{=A(IMG(_src=URL('download',args=section_chart.chart.file),_class='img-small'),_href=URL('delete_chart',vars={'sid':section_chart.id}), cid='modal-dialog',_class='modal-link')}}
                         {{pass}}
                     </div>      
                 </div>

@@ -88,7 +88,7 @@ def edit_section():
     form = SQLFORM(db.dashboard_section,section)
     if form.process().accepted:
         response.flash = "Section updated"
-        redirect(URL('manage_dashboard'))
+        redirect(URL('manage_dashboard'),client_side=True)
     elif form.errors:
         response.flash = "There were errors in the form"
     else:
