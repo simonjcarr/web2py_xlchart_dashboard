@@ -79,7 +79,7 @@
     {{for chart in mycharts:}}
     <div class="chartholder">
     	<div class="userimage">
-    		{{=IMG(_src=URL('download',args=chart.id_chart.file),_width='150px')}}<BR>
+            {{=A(IMG(_src=URL('download',args=chart.id_chart.file),_width='150px'),_href=URL('charts','edit_subscription',vars={'ucid':chart.id}),cid="modal-dialog",_class="modal-link")}}<BR>
             <span class="usermsg">{{=A('Un-Subscribe',_href=URL('unsubscribe',vars={'id_chart': chart.id}))}}</span>
         </div>
         <div class="usertext">
@@ -112,3 +112,4 @@
 	{{pass}}
 </div>
 </div>
+<div id="modal-dialog" title="PyXLCharts"></div>

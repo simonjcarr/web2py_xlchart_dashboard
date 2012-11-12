@@ -19,8 +19,10 @@ def index():
     return auth.wiki()
     """
   
-    response.flash = T("Welcome to web2py!")
-    return dict(message=T('Hello World'))
+    if auth.is_logged_in():
+        redirect(URL('dashboard','manage_dashboard'))
+    else:
+        return dict()
 
 def add_workbook():
     grid = SQLFORM.smartgrid(db.workbook)
@@ -103,7 +105,16 @@ def user():
     to decorate functions that need access control
     """
     return dict(form=auth())
-
+def refresh_charts():
+    import datetime
+    charts = db(db.user_chart).select()
+    for chart in charts:
+       a = chart.id_chart.lastupdated
+       try:
+           b = datetime.datetime(a.year,a.month,a.day,a.hour,a.minute,a.second)
+           print chart.id_chart.lastupdated, b + datetime.timedelta(hours=5)
+       except:
+           pass
 
 def download():
     """

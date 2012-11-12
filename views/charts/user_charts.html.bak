@@ -4,9 +4,7 @@
     
     <style>
         
-        #page-frame{
-            width: 400px;
-        }
+   
         
     #usercharts{
         float: left;
@@ -81,8 +79,8 @@
     {{for chart in mycharts:}}
     <div class="chartholder">
     	<div class="userimage">
-    		{{=IMG(_src=URL('download',args=chart.id_chart.file),_width='150px')}}<BR>
-            <span class="usermsg">{{=A('Un-Subscribe',_href=URL('unsubscribe',vars={'id_chart': chart.id}))}}</span>
+            {{=A(IMG(_src=URL('download',args=chart.id_chart.file),_width='150px'),_href=URL('charts','edit_subscription',vars={'ucid':chart.id}))}}<BR>
+            <span class="usermsg">{{=A('Un-Subscribe',_href=URL('unsubscribe',vars={'id_chart': chart.id}),cid='modal-dialog',_class='modal-link')}}</span>
         </div>
         <div class="usertext">
             
@@ -114,3 +112,4 @@
 	{{pass}}
 </div>
 </div>
+<div id="modal-dialog" title="PyXLCharts"></div>

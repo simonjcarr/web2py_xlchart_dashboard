@@ -72,6 +72,41 @@ def add_chart_to_section():
     else:
         response.flash = "Error: Unable to add chart to section"
     redirect(URL('manage_dashboard'))
+
+@auth.requires_login()   
+def edit_chart():
+    record = db.section_charts(request.vars['scid'])
+    
+    form = SQLFORM(db.section_charts,record,Fields=('title','description','width','position'),deletable=True,hidden=dict(oldposition=record.position,sec_chart_id=request.vars['scid'],id_section=request.vars['sid']))
+    
+    if form.process(onvalidation=change_img_position).accepted:
+        response.flash = "Chart Updated"
+        redirect(URL('manage_dashboard'),client_side=True)
+    elif form.errors:
+        response.flash = "The forms has errors"
+    else:
+       
+        response.flash = "Please complete the form"
+    return form
+
+def change_img_position(form):
+    print request.vars['oldposition'], form.vars['position']
+    oldpos = int(request.vars['oldposition'])
+    newpos = int(form.vars['position'])
+    if request.vars['oldposition'] != form.vars['position']:
+        sql = "select position from section_charts where id_section = " + str(request.vars.id_section) + " and position = " + str(form.vars['position'])
+        chartpos = db.executesql(sql)
+        print chartpos
+        
+        if chartpos:
+            print oldpos, newpos
+            if oldpos < newpos:
+                
+                sql = "update section_charts set position = position - 1 where id_section = " + str(request.vars.id_section) + " and position <= " + str(newpos) + " and position > " + str(oldpos)
+            else:    
+                sql = "update section_charts set position = position + 1 where id_section = " + str(request.vars.id_section) + " and position >= " + str(form.vars['position'])
+            db.executesql(sql)
+    
 @auth.requires_login() 
 def delete_chart():
     form = FORM.confirm('Yes Delete',{"No, DON'T Delete":URL('manage_dashboard')})

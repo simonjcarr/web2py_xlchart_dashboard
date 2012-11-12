@@ -26,9 +26,31 @@ def subscribe_form():
         response.flash = 'Please complete the form to register the chart.'
     return form
 
+def edit_subscription():
+    ucid = request.vars['ucid']
+    record = db.user_chart(ucid)
+    form = SQLFORM(db.user_chart,record,fields=['title','description','updatehours'])
+    if form.process().accepted:
+        response.flash = 'Subscription Updated'
+        redirect(URL('user_charts'),client_side=True)
+    elif form.errors:
+        response.flash = 'form has errors'
+    else:
+        response.flash = 'Please complete the form.'
+    return form
+
 def unsubscribe():
-    db(db.user_chart.id == request.vars['idchart']).delete()
+    db(db.user_chart.id == request.vars['id_chart']).delete()
     redirect(URL('user_charts'))
-    
+
+def refresh_chart():
+    import datetime
+    charts = db(db.user_chart).select()
+    for chart in charts:
+        updatehours = chart.updatehours
+        lastupdated = chart.id_chart.lastupdated
+        print updatehours,lastupdated
+   
+         
 def download():
     return response.download(request, db)

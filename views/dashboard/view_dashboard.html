@@ -33,7 +33,7 @@
     {{for section in sections:}}
     <div class="dashboard-section" style="width:{{=section.width-1}}%; {{if section.centre == 'True':}} text-align: center;{{pass}}">
         <div class="section-title" style="font-size:{{=section.titlesize}}pt">{{=section.title}}</div>
-            {{for section_chart in db(db.section_charts.id_section == section.id).select(db.section_charts.ALL):}}
+            {{for section_chart in db(db.section_charts.id_section == section.id).select(db.section_charts.ALL, orderby=db.section_charts.position):}}
           
             <div  class="section-chart" {{if section_chart.width > 0 or section.chartwidth > 0:}}style="width:{{if section_chart.width > 0:}}{{=section_chart.width - 2}}{{else:}}{{=section.chartwidth - 2}}{{pass}}{{pass}}%;">
                 {{=IMG(_src=URL('download',args=section_chart.chart.file))}}

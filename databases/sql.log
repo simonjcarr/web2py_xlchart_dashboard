@@ -215,3 +215,5 @@ timestamp: 2012-11-09T23:10:08.328000
 ALTER TABLE chart ADD lastupdated TIMESTAMP;
 timestamp: 2012-11-09T23:13:18.265000
 ALTER TABLE user_chart ADD updatehours INTEGER;
+timestamp: 2012-11-10T15:01:47.765000
+ALTER TABLE section_charts ADD position INTEGER;

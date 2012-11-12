@@ -83,8 +83,8 @@
                 <div class="section_title">
                     <span class="delete_section">| {{=A('Charts',_href=URL('select_charts',vars={'sid':dashboard_section.id}),cid="modal-dialog",_class="modal-link")}} | {{=A('Edit',_href=URL('edit_section',vars={'sid':dashboard_section.id}),cid='modal-dialog',_class='modal-link')}} | {{=A('Delete',_href=URL('delete_section',vars={'sid': dashboard_section.id}), cid='modal-dialog',_class='modal-link')}} |</span>{{=dashboard_section.title}}
                     <div class='chart_small_image'>
-                        {{for section_chart in dashboard_section.section_charts.select():}}
-                        {{=A(IMG(_src=URL('download',args=section_chart.chart.file),_class='img-small'),_href=URL('delete_chart',vars={'sid':section_chart.id}), cid='modal-dialog',_class='modal-link')}}
+                        {{for section_chart in dashboard_section.section_charts.select(orderby=db.section_charts.position):}}
+                        {{=A(IMG(_src=URL('download',args=section_chart.chart.file),_class='img-small'),_href=URL('edit_chart',vars={'scid':section_chart.id,'sid':dashboard_section.id}), cid='modal-dialog',_class='modal-link')}}
                         {{pass}}
                     </div>      
                 </div>
@@ -99,4 +99,4 @@
 
 {{pass}}
 
-<div id="modal-dialog" title="PyXLCharts">This is some test Text</div>
+<div id="modal-dialog" title="PyXLCharts"></div>

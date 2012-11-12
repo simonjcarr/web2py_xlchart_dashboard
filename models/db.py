@@ -95,16 +95,16 @@ db.define_table('chart',
 Field('chartName'),
 Field('id_workbook',db.workbook),
 Field('worksheet'),
-Field('file','upload'),
+Field('file','upload',autodelete=True),
 Field('lastupdated','datetime',default=request.now),
 format="%(id_workbook)s %(chartName)s",
 )
 
 db.define_table('user_chart',
-Field('id_user',db.auth_user,readable=False,default=auth.user_id),
-Field('id_chart','reference chart'),
-Field('title', requires=IS_NOT_EMPTY()),
-Field('description','text'),
+Field('id_user',db.auth_user,readable=False,default=auth.user_id,writable=False),
+Field('id_chart','reference chart',readable=False,writable=False),
+Field('title', requires=IS_NOT_EMPTY(),label='Default Title'),
+Field('description','text',label='Default Description'),
 Field('updatehours','integer',default=24),
 format="%(title)s",
 )
@@ -129,11 +129,12 @@ format="%(title)s",
 )
 
 db.define_table('section_charts',
-Field('id_section',db.dashboard_section),
-Field('chart','reference chart'),
+Field('id_section',db.dashboard_section,ondelete='CASCADE',writable=False,readable=False),
+Field('chart','reference chart',writable=False,readable=False),
 Field('title'),
 Field('description','text'),
 Field('width','decimal(2,2)',requires=IS_DECIMAL_IN_RANGE(1,100),label='Width(%)',default=50.00),
+Field('position','integer',default=1),
 Field('bgcolor'),
 )
 

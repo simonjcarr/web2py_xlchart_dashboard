@@ -35,7 +35,7 @@
         <div class="section-title" style="font-size:{{=section.titlesize}}pt">{{=section.title}}</div>
             {{for section_chart in db(db.section_charts.id_section == section.id).select(db.section_charts.ALL):}}
           
-            <div  class="section-chart" {{if section_chart.width > 0 or section.chartwidth > 0:}}style="width:{{if section_chart.width > 0:}}{{=section_chart.width - 1}}{{else:}}{{=section.chartwidth - 1}}{{pass}}{{pass}}%;">
+            <div  class="section-chart" {{if section_chart.width > 0 or section.chartwidth > 0:}}style="width:{{if section_chart.width > 0:}}{{=section_chart.width - 2}}{{else:}}{{=section.chartwidth - 2}}{{pass}}{{pass}}%;">
                 {{=IMG(_src=URL('download',args=section_chart.chart.file))}}
             </div>
         	
